@@ -1,0 +1,77 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+venv_build/
+ENV/
+env/
+venv_new/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# PyInstaller
+*.manifest
+*.spec.swp
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
+temp/
+
+# PDF files (large test files)
+*.pdf
+
+# CSV files (results)
+*.csv
+
+# Images (generated)
+*.png
+*.jpg
+*.jpeg
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IIS
+web.config.bak
+
+# Inno Setup
+installer_output/
+Output/
+
+# Backups
+*.bak
+backup/
+Backup/
+
+# Legacy and nested virtual environments
+old/venv/
+

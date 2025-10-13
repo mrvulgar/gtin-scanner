@@ -1,0 +1,25 @@
+version: "3.8"
+
+services:
+  gtin-scanner:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    image: gtin-scanner:latest
+    container_name: gtin-scanner
+    restart: unless-stopped
+    environment:
+      - GRADIO_SERVER_NAME=0.0.0.0
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.gtin-scanner.rule=Host(`${SCAN_DOMAIN:-scan.beerzavod.ru}`)
+      - traefik.http.routers.gtin-scanner.entrypoints=websecure
+      - traefik.http.routers.gtin-scanner.tls.certresolver=le
+      - traefik.http.services.gtin-scanner.loadbalancer.server.port=7860
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
+
