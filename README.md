@@ -22,6 +22,26 @@ Repository / Репозиторий: https://github.com/mrvulgar/gtin-scanner
 
 ---
 
+## Debug mode / Режим отладки
+
+English:
+- Set environment variable to get verbose logs (debug decoding, normalization details).
+```bash
+GTIN_LOG_LEVEL=DEBUG python gtin_scanner_live.py
+# or with Docker
+docker run --rm -e GTIN_LOG_LEVEL=DEBUG -p 7860:7860 gtin-scanner
+```
+
+Русский:
+- Установите переменную окружения для подробных логов (отладка декодирования, нормализации).
+```bash
+GTIN_LOG_LEVEL=DEBUG python gtin_scanner_live.py
+# или через Docker
+docker run --rm -e GTIN_LOG_LEVEL=DEBUG -p 7860:7860 gtin-scanner
+```
+
+---
+
 ## Quick start (Python) / Быстрый старт (Python)
 
 English:
