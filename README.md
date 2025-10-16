@@ -107,8 +107,12 @@ docker compose -f deploy/docker-compose.app.yml up -d
 - Performance on large PDFs/images depends on system resources.
 - Logs, PDFs, images, CSVs, and virtualenvs are ignored by `.gitignore`.
 
+- GS (Group Separator, ASCII 0x1D) handling: codes preserve the GS character where applicable; when missing, the app attempts to insert GS before the 93‑segment (crypto tail) when detected.
+
 - Производительность на больших PDF/изображениях зависит от ресурсов системы.
 - Логи, PDF, изображения, CSV и виртуальные окружения исключены в `.gitignore`.
+
+- Обработка GS (Group Separator, ASCII 0x1D): коды сохраняют символ GS, где он присутствует; при отсутствии приложение пытается вставить GS перед сегментом 93 (крипто‑хвост), если он обнаружен.
 
 ---
 

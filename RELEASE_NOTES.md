@@ -3,6 +3,8 @@
 ### Added / Добавлено
 - Debug logging via environment variable `GTIN_LOG_LEVEL` (e.g., `DEBUG`).
 - Поддержка подробного логирования через переменную окружения `GTIN_LOG_LEVEL` (например, `DEBUG`).
+- GS (Group Separator, ASCII 0x1D) normalization/preservation. If GS is missing, the app attempts to insert one before the `93` crypto tail when found.
+- Нормализация/сохранение GS (Group Separator, ASCII 0x1D). При отсутствии GS приложение пытается вставить его перед `93` (крипто‑хвостом), если он обнаружен.
 
 ---
 
