@@ -3,7 +3,7 @@ FROM python:3.11-slim-bookworm
 # System deps (keep minimal)
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
-       libglib2.0-0 libgl1 ca-certificates \
+       libglib2.0-0 libgl1 ca-certificates libdmtx0b fonts-dejavu-core \
     && rm -rf /var/lib/apt/lists/*
 
 ENV PYTHONUNBUFFERED=1 \
