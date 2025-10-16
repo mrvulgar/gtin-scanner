@@ -79,3 +79,4 @@ networks:
 - `Dockerfile` — образ Python 3.11 с зависимостями, запуск через `uvicorn gtin_scanner_live_iis:app` на `:7860`.
 - `deploy/deploy.sh` — всё‑в‑одном: установка Docker, сеть, Traefik, деплой приложения.
 
+

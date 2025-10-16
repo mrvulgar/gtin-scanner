@@ -16,6 +16,7 @@ services:
       - traefik.http.routers.gtin-scanner.entrypoints=websecure
       - traefik.http.routers.gtin-scanner.tls.certresolver=le
       - traefik.http.services.gtin-scanner.loadbalancer.server.port=7860
+      - traefik.docker.network=${TRAEFIK_NETWORK:-proxy}
     networks:
       - proxy
 

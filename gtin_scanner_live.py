@@ -9,6 +9,7 @@ import io
 import time
 import threading
 import logging
+import os
 import re
 from pathlib import Path
 from typing import Optional, Tuple
@@ -23,6 +24,9 @@ logging.basicConfig(
     ],
 )
 logger = logging.getLogger(__name__)
+
+LOG_LEVEL = os.getenv('GTIN_LOG_LEVEL', 'INFO').upper()
+logging.getLogger().setLevel(LOG_LEVEL)
 
 try:
     import gradio as gr
@@ -89,7 +93,7 @@ class GTINScanner:
                 f"✅ PDF загружен: {Path(self.pdf_path).name}\n"
                 f"📄 Страниц: {total_pages}\n\n"
                 "⚠️ Для больших файлов рекомендуется протестировать на первых 10-50 страницах\n"
-                "🖱️ Дважды кликните по изображению, чтобы выделить область с Data Matrix"
+                "🖱️ Дважды кликните по изображению, чтобы выделить область с Data Matrix (клик на левый верхний угол и правый нижний)"
             )
             return self.preview_image, message
         except Exception as exc:
@@ -211,12 +215,27 @@ class GTINScanner:
                         decoded_objects = []
 
                     page_codes: list[str] = []
-                    for obj in decoded_objects:
+                    for idx, obj in enumerate(decoded_objects):
+                        raw_bytes = obj.data
+                        logger.debug(
+                            "Raw decoded bytes (page %d, index %d): %s",
+                            page_num + 1,
+                            idx,
+                            raw_bytes,
+                        )
                         try:
-                            code_data = obj.data.decode("utf-8")
+                            code_data = raw_bytes.decode("utf-8")
                         except UnicodeDecodeError:
-                            code_data = obj.data.decode("latin-1")
+                            code_data = raw_bytes.decode("latin-1")
                         clean_code = self._normalize_code(code_data)
+                        if clean_code != code_data:
+                            logger.debug(
+                                "Normalized code differs (page %d, index %d): '%s' -> '%s'",
+                                page_num + 1,
+                                idx,
+                                code_data,
+                                clean_code,
+                            )
                         page_codes.append(clean_code)
                         all_codes.append(clean_code)
 
@@ -355,12 +374,12 @@ class GTINScanner:
             return match.group(0)
 
         s = self.ESCAPE_RE.sub(_replace, s)
-        s = s.replace("\x1d", "")
-        while '""' in s:
-            s = s.replace('""', '"')
-        if len(s) >= 2 and s.startswith('"') and s.endswith('"'):
-            s = s[1:-1]
-        s = "".join(ch for ch in s if ord(ch) >= 32)
+        if "\x1d" not in s:
+            marker_index = s.find("93")
+            if marker_index != -1:
+                s = f"{s[:marker_index]}\x1d{s[marker_index:]}"
+                logger.debug("Inserted GS separator before crypto tail: %s", s)
+        s = "".join(ch for ch in s if ord(ch) >= 32 or ch == "\x1d")
         return s
 
     def _generate_csv(self, codes: list[str]) -> str:
