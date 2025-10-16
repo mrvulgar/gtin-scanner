@@ -26,7 +26,7 @@ USER appuser
 
 EXPOSE 7860
 
-# Run FastAPI app (Gradio mounted on FastAPI) via Uvicorn
-CMD ["uvicorn", "gtin_scanner_live_iis:app", "--host", "0.0.0.0", "--port", "7860", "--proxy-headers", "--forwarded-allow-ips", "*"]
+# Default command runs Gradio directly, disabling API schema rendering to avoid known bug
+CMD ["python", "-u", "run_app.py"]
 
 
